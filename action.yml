@@ -1,0 +1,29 @@
+---
+name: "Dnsmasq configuration check"
+description: GitHub Action for Dnsmasq config check
+author: itdoginfo
+
+branding:
+  color: blue
+  icon: file-text
+
+inputs:
+  file:
+    description: File the Dnsmasq configuration
+    default: "."
+    required: true
+  version:
+    description: Version Dnsmasq to use
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run Dnsmasq configuration check
+      shell: bash
+      run: |
+        docker run --rm \
+            -v $(pwd):/github/ \
+            "itdoginfo/dnsmasq:${{ inputs.version  }}" \
+                --conf-file="/github/${{ inputs.file }}" \
+                --test
